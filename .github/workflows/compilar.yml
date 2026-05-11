@@ -1,0 +1,26 @@
+name: Verificador de Codigo Java
+
+# ¿Cuándo se activa? Cuando subas cambios (push)
+on: [push]
+
+jobs:
+  proceso-de-revision:
+    runs-on: ubuntu-latest # Usa una compu con Linux en la nube
+
+    steps:
+      # 1. El robot descarga tu código
+      - name: Descargando archivos
+        uses: actions/checkout@v4
+
+      # 2. El robot instala Java 17
+      - name: Instalando Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # 3. El robot intenta compilar (como lo hace VS Code por detrás)
+      - name: Compilando el proyecto
+        run: |
+          mkdir bin
+          javac -d bin -sourcepath src src/main/Main.java
